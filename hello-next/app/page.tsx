@@ -6,6 +6,7 @@ export default function Home() {
   const name = "Chris";
   const number = 10;
   const aboutPage = "/about"
+  const interactivePage = "/interactiveElements"
 
   return (
     <main>
@@ -20,6 +21,11 @@ export default function Home() {
       <Link href={aboutPage}>
       Go to About
       </Link>
+      <br />
+      <Link href={interactivePage}>
+      Go to Interative Elements
+      </Link>
+
     </main>
     
   );
