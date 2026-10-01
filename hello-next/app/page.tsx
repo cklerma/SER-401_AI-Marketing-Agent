@@ -1,7 +1,10 @@
+import Link from "next/link";
+
 export default function Home() {
 
   const name = "Chris";
   const number = 10;
+  const aboutPage = "/about"
 
   return (
     <main>
@@ -12,7 +15,9 @@ export default function Home() {
       <p>My number is {number}</p>
       <p>10 + 10 = {number + number}</p>
 
-      <button> Click Me! </button>
+      <Link href={aboutPage}>
+      Go to About
+      </Link>
     </main>
     
   );
