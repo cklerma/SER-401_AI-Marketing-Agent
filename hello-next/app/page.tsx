@@ -1,4 +1,5 @@
 import Link from "next/link";
+import WelcomeMessage from "@/components/WelcomeMessage";
 
 export default function Home() {
 
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <main>
       <h1>Hello {name}!</h1>
+      <WelcomeMessage />
 
       <p>I am learning Next.js.</p>
 
