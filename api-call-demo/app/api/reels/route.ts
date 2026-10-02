@@ -1,9 +1,17 @@
+import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
   const hashtag = searchParams.get("hashtag");
+
+  if (!hashtag) {
+    return NextResponse.json(
+        { error: "Hashtag is required" },
+        { status: 400 }
+    );
+  }
 
   return NextResponse.json({
     hashtag: hashtag,
