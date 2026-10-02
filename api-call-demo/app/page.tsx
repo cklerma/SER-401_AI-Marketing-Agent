@@ -4,10 +4,15 @@ import { useState } from "react";
 
 export default function Home() {
   const [input, setInput] = useState("");
-  const [searchResult, setSearchResult] = useState("");
+  const [searchResult, setSearchResult] = useState<any>(null);
 
-  function handleSearch() {
-    setSearchResult(input);
+  async function handleSearch() {
+    const response = await fetch(
+      `/api/reels?hashtag=${encodeURIComponent(input)}`
+    );
+
+    const data = await response.json();
+    setSearchResult(data)
   }
 
   return (
@@ -32,7 +37,14 @@ export default function Home() {
       </div>
 
       {searchResult && (
-        <p>You searched for: {searchResult}</p>
+        <div> 
+          <p>Hashtag: {searchResult.hashtag}</p>
+          <p>Username: {searchResult.username}</p>
+          <p>Caption: {searchResult.caption}</p>
+          <p>Likes: {searchResult.likes}</p>
+          <p>Comments: {searchResult.comments}</p>
+          <p>Views: {searchResult.views}</p>
+        </div>
       )}
     </main>
   );
