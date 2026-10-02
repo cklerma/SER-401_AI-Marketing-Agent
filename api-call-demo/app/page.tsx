@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function Home() {
   const [input, setInput] = useState("");
   const [searchResult, setSearchResult] = useState<any>(null);
+  const [error, setError] = useState("");
 
   async function handleSearch() {
     const response = await fetch(
@@ -12,6 +13,13 @@ export default function Home() {
     );
 
     const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.error);
+      setSearchResult(null);
+      return;
+    }
+
     setSearchResult(data)
   }
 
@@ -45,6 +53,10 @@ export default function Home() {
           <p>Comments: {searchResult.comments}</p>
           <p>Views: {searchResult.views}</p>
         </div>
+      )}
+
+      {error && (
+        <p>{error}</p>
       )}
     </main>
   );
