@@ -1,10 +1,13 @@
-import { error } from "console";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
-  const hashtag = searchParams.get("hashtag");
+  const hashtag = searchParams
+    .get("hashtag")
+    ?.trim()
+    .replace(/^#/, "");
 
   if (!hashtag) {
     return NextResponse.json(
