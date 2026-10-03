@@ -5,6 +5,8 @@ import { useState } from "react";
 export default function Home() {
   const [video, setVideo] = useState<File | null>(null);
   const [frames, setFrames] = useState<string[]>([]);
+  const [description, setDescription] = useState("");
+  const [analyzing, setAnalyzing] = useState(false);
 
   function handleVideoUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -12,6 +14,36 @@ export default function Home() {
     if (file) {
       setVideo(file);
       setFrames([]);
+    }
+  }
+
+  async function analyzeFrames(frameData: string[]) {
+    try {
+      setAnalyzing(true);
+      setDescription("");
+
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          frames: frameData,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+      throw new Error(data.error || "Analysis failed.");
+      }
+
+      setDescription(data.description);
+    } catch (error) {
+      console.error(error);
+      setDescription("Something went wrong while analyzing the video.");
+    } finally {
+      setAnalyzing(false);
     }
   }
 
@@ -80,6 +112,7 @@ export default function Home() {
       }
 
       setFrames(extractedFrames);
+      await analyzeFrames(extractedFrames);
     };
   }
 
@@ -128,6 +161,20 @@ export default function Home() {
               />
             </div>
           ))}
+        </div>
+      )}
+
+      {analyzing && (
+        <div>
+          <h2>Analyzing Video...</h2>
+          <p>The AI is looking at the frames.</p>
+        </div>
+      )}
+
+      {description && (
+        <div>
+          <h2>Video Description</h2>
+          <p>{description}</p>
         </div>
       )}
     </main>
